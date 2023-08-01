@@ -1,0 +1,31 @@
+name: CI/CD Dispatch
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+      - name: Apply service filter
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            alpha:
+              - 'alpha/**'
+            beta:
+              - 'beta/**'
+            gamma:
+              - 'gamma/**'
+      - name: Dispatch alpha CI/CD workflow
+        if: steps.filter.outputs.alpha == 'true'
+        run: cat ./alpha/file.txt
+      - name: Dispatch beta CI/CD workflow
+        if: steps.filter.outputs.beta == 'true'
+        run: cat ./beta/file.txt
+      - name: Dispatch gamma CI/CD workflow
+        if: steps.filter.outputs.gamma == 'true'
+        run: cat ./gamma/file.txt
