@@ -21,8 +21,8 @@ jobs:
             gamma:
               - 'gamma/**'
       - name: Dispatch alpha CI/CD workflow
+        uses: ./.github/workflows/alpha.yml
         if: steps.filter.outputs.alpha == 'true'
-        run: cat ./alpha/file.txt
       - name: Dispatch beta CI/CD workflow
         if: steps.filter.outputs.beta == 'true'
         run: cat ./beta/file.txt
